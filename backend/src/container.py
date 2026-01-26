@@ -4,7 +4,7 @@ from src.presentation.controllers.attribute_schema_controller import AttributeSc
 from src.application.use_cases.create_attribute_schema import CreateAttributeSchemaUseCase
 from src.domain.factories.attribute_schema_factory import AttributeSchemaFactory
 from src.infrastructure.connectors.file_connector import FileConnector
-from src.infrastructure.identifiers.prefixed_identity_generator import PrefixedIdentifierGenerator
+from backend.src.infrastructure.identifiers.prefixed_identifier_generator import PrefixedIdentifierGenerator
 from src.infrastructure.persistence.repositories.json.attribute_schema_repository import JsonAttributeSchemaRepository
 
 class Container:

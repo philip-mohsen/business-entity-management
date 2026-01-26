@@ -1,4 +1,4 @@
-# File: backend/src/infrastructure/id_generator/prefixed_identity_generator.py
+# File: backend/src/infrastructure/identifiers/prefixed_identifier_generator.py
 
 import uuid
 from src.domain.interfaces.identifier_generator import IIdentifierGenerator
