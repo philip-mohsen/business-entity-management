@@ -12,11 +12,15 @@ class JsonAttributeSchemaRepository(IAttributeSchemaRepository):
 
     def save(self, attribute_schema: AttributeSchema) -> None:
         all_data = self.connector.read_json(self.collection)
-        all_data[attribute_schema.id.value] = attribute_schema.model_dump()
+        all_data[attribute_schema.id.value] = attribute_schema.model_dump(mode="json")
         self.connector.write_json(self.collection, all_data)
 
     def get_by_id(self, id: Identifier) -> AttributeSchema:
-        pass
+        all_data = self.connector.read_json(self.collection)
+        data = all_data.get(id.value)
+        if data:
+            return AttributeSchema.model_validate(data)
+        return None
 
     def delete(self, id: Identifier) -> None:
         pass
