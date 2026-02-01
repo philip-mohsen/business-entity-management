@@ -30,7 +30,7 @@ class JsonSchemaValidatorService(IValueValidatorService):
 
     def validate(self, attribute_schema: AttributeSchema, value: Any) -> None:
         value_schema = attribute_schema.value_schema
-        AdapterClass = self._ADAPTER_MAP[value_schema.type]
+        AdapterClass = self._ADAPTER_MAP.get(value_schema.type)
 
         if not AdapterClass:
             raise NotImplementedError(f"Validation not implemented for {value_schema.type}")
