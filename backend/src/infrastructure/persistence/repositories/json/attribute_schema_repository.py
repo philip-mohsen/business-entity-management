@@ -17,7 +17,12 @@ class JsonAttributeSchemaRepository(IAttributeSchemaRepository):
         self.connector.write_json(self.collection, data)
         
     def get(self, id: AttributeIdentifier) -> Optional[AttributeSchema]:
-        pass
+        data = self.connector.read_json(self.collection)
+        attribute_data = data.get(id.value)
+        if attribute_data:
+            return AttributeSchema.model_validate(attribute_data)
+        
+        return None
 
     def delete(self, id: AttributeIdentifier) -> None:
         pass
