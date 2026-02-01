@@ -3,6 +3,7 @@
 from fastapi import APIRouter, Depends, status
 from src.container import container
 from src.application.dtos.attribute_schema_dto import AttributeSchemaRequest, AttributeSchemaDTO
+from src.application.dtos.attribute_validation_dto import ValueValidationRequest, ValueValidationResponse
 from src.presentation.controllers.attribute_schema_controller import AttributeSchemaController
 
 router = APIRouter(
@@ -39,3 +40,15 @@ def get_attribute_schema(
     controller: AttributeSchemaController = Depends(get_attribute_controller)
 ):
     return controller.get(attribute_schema_id)
+
+@router.get(
+        "/{attribute_schema_id}/validate", 
+        response_model=ValueValidationResponse, 
+        response_model_by_alias=True
+)
+def validate_attribute_value(
+    attribute_schema_id: str,
+    request: ValueValidationRequest,
+    controller: AttributeSchemaController = Depends(get_attribute_controller)
+):
+    return controller.validate(attribute_schema_id, request)
