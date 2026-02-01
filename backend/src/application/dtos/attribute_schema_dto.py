@@ -1,6 +1,6 @@
 # File: backend/src/application/dtos/attribute_schema_dto.py
 
-from typing import Annotated, Union, Literal
+from typing import Annotated, Union, Literal, Set
 from pydantic import BaseModel, ConfigDict, Field
 
 class TextValueSchemaDTO(BaseModel):
@@ -38,11 +38,18 @@ class IntegerValueSchemaDTO(BaseModel):
         description="Maximum integer value"
     )
 
+class ListTextValueSchemaDTO(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    type: Literal["listtext"] = Field(default="listtext", alias="type", description="Type of the value schema")
+    items: Set[str] = Field(
+        ...,
+        description="List of allowed text values"
+    )
+
 AttributeSchemaValueDTO = Annotated[
-    Union[TextValueSchemaDTO, IntegerValueSchemaDTO], 
+    Union[TextValueSchemaDTO, IntegerValueSchemaDTO, ListTextValueSchemaDTO], 
     Field(discriminator="type")
 ]
-
 
 class AttributeSchemaRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)

@@ -1,14 +1,15 @@
 # File: backend/src/domain/models/values.py
 
 from enum import StrEnum
-from typing import Annotated, Literal, Union
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from typing import Annotated, Literal, Union, Set
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 class ValueType(StrEnum):
     TEXT = "text"
     INTEGER = "integer"
     DATE = "date"
     BOOLEAN = "boolean"
+    LISTTEXT = "listtext"
 
 class AttributeValueSchemaBase(BaseModel):
     model_config = ConfigDict(
@@ -41,7 +42,11 @@ class IntegerValueSchema(AttributeValueSchemaBase):
                 raise ValueError("min_value cannot be greater than max_value")
         return self
 
+class ListTextValueSchema(AttributeValueSchemaBase):
+    type: Literal[ValueType.LISTTEXT] = Field(default=ValueType.LISTTEXT)
+    items: Set[str] = Field(..., min_items=1)
+
 AttributeValueSchema = Annotated[
-    Union[TextValueSchema, IntegerValueSchema],
+    Union[TextValueSchema, IntegerValueSchema, ListTextValueSchema],
     Field(discriminator="type")
 ]

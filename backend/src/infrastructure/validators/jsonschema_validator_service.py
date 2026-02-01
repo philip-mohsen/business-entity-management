@@ -1,8 +1,8 @@
 # File: /backend/src/infrastructure/validators/jsonschema_validator_service.py
 
-from typing import Any, Literal, Type
+from typing import Any, Literal, Type, Set
 from jsonschema import validate, ValidationError
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 from src.domain.models.attributes import AttributeSchema
 from src.domain.models.values import ValueType
 from src.domain.interfaces.services.value_validator_service import IValueValidatorService
@@ -22,10 +22,20 @@ class JSONSchemaInteger(BaseModel):
     min_value: int | None = Field(default=None, alias="minimum")
     max_value: int | None = Field(default=None, alias="maximum")
 
+class JSONSchemaStringArray(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    type: Literal["array"] = Field(default="array", alias="type")
+    items: Set[str] = Field(..., description="Allowed string values", alias="items")
+
+    @field_serializer("items")
+    def serialize_items(self, items: Set[str]) -> dict:
+        return {"type": "string", "enum": list(items)}
+
 class JsonSchemaValidatorService(IValueValidatorService):
     _ADAPTER_MAP: dict[ValueType, Type[BaseModel]] = {
         ValueType.TEXT: JSONSchemaString,
         ValueType.INTEGER: JSONSchemaInteger,
+        ValueType.LISTTEXT: JSONSchemaStringArray,
     }
 
     def validate(self, attribute_schema: AttributeSchema, value: Any) -> None:
