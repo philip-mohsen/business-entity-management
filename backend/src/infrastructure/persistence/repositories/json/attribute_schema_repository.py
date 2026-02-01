@@ -1,7 +1,8 @@
 # File: src/infrastructure/persistence/repositories/json/attribute_schema_repository.py
 
+from typing import Optional
 from src.domain.models.attributes import AttributeSchema
-from src.domain.models.identifier import Identifier
+from src.domain.models.identifier import AttributeIdentifier
 from src.domain.interfaces.repositories.attribute_schema_repository import IAttributeSchemaRepository
 from src.infrastructure.connectors.file_connector import FileConnector
 
@@ -11,16 +12,12 @@ class JsonAttributeSchemaRepository(IAttributeSchemaRepository):
         self.collection = "attribute_schemas"
 
     def save(self, attribute_schema: AttributeSchema) -> None:
-        all_data = self.connector.read_json(self.collection)
-        all_data[attribute_schema.id.value] = attribute_schema.model_dump(mode="json")
-        self.connector.write_json(self.collection, all_data)
+        data = self.connector.read_json(self.collection)
+        data[attribute_schema.id.value] = attribute_schema.model_dump(mode="json", exclude_none=True)
+        self.connector.write_json(self.collection, data)
+        
+    def get(self, id: AttributeIdentifier) -> Optional[AttributeSchema]:
+        pass
 
-    def get_by_id(self, id: Identifier) -> AttributeSchema:
-        all_data = self.connector.read_json(self.collection)
-        data = all_data.get(id.value)
-        if data:
-            return AttributeSchema.model_validate(data)
-        return None
-
-    def delete(self, id: Identifier) -> None:
+    def delete(self, id: AttributeIdentifier) -> None:
         pass
