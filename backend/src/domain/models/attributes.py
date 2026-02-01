@@ -1,11 +1,13 @@
 # File: backend/src/domain/models/attributes.py
 
-from pydantic import BaseModel
-from src.domain.models.identifier import Identifier
-from src.domain.models.values import AttributeValueSchemaT
+from pydantic import BaseModel, ConfigDict
+from src.domain.models.identifier import AttributeIdentifier
+from src.domain.models.values import AttributeValueSchema
 
 class AttributeSchema(BaseModel):
-    id: Identifier
+    model_config = ConfigDict(frozen=True)
+    
+    id: AttributeIdentifier
     name: str
     label: str
-    value_schema: AttributeValueSchemaT
+    value_schema: AttributeValueSchema
