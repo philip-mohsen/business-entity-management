@@ -13,5 +13,6 @@ To keep the domain model from becoming the transport/API contract:
 - Domain models must not contain HTTP/API concerns (route-specific fields, pagination, request aliases, OpenAPI examples, etc.).
 - Use-case inputs are modeled as Application Commands (Pydantic) when the API payload shape differs from the domain model.
 - Mappings live in the Application layer (or next to the use case), not in the Domain.
-- Domain models validate domain invariants; orchestration, authorization, and persistence concerns remain outside the Domain.
+- Domain models validate domain invariants. 
+- Orchestration, authorization, and persistence concerns remain outside the Domain.
 - Infrastructure-specific serialization/export (e.g., JSON Schema generation for external interfaces) is implemented outside Domain (Application/Infrastructure), using domain models as input.
