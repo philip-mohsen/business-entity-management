@@ -22,6 +22,7 @@ class TextValueSchema(AttributeValueSchemaBase):
     type: Literal[ValueType.TEXT] = Field(default=ValueType.TEXT)
     min_length: int | None = Field(default=None, ge=0)
     max_length: int | None = Field(default=None, ge=0)
+    pattern: str | None = Field(default=None, min_length=1)
 
     @model_validator(mode="after")
     def validate_length_constraints(self) -> "TextValueSchema":

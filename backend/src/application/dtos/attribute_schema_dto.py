@@ -20,6 +20,13 @@ class TextValueSchemaDTO(BaseModel):
         description="Maximum length of the text value"
     )
 
+    pattern: str | None = Field(
+        default=None,
+        alias="pattern",
+        min_length=1,
+        description="Regex pattern that the text value must match"
+    )
+
 class IntegerValueSchemaDTO(BaseModel):
     model_config = ConfigDict(populate_by_name=True)    
     type: Literal["integer"] = Field(default="integer", alias="type", description="Type of the value schema")
@@ -37,6 +44,7 @@ class IntegerValueSchemaDTO(BaseModel):
         alias="maximum",
         description="Maximum integer value"
     )
+
 
 class ListTextValueSchemaDTO(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
