@@ -13,6 +13,13 @@ class IAttributeSchemaRepository(ABC):
         Returns None if no attribute is found.
         """
         pass
+    
+    @abstractmethod
+    def get_all(self) -> list[AttributeSchema]:
+        """
+        Retrieve all attribute schemas.
+        """
+        pass
 
     @abstractmethod
     def save(self, attribute_schema: AttributeSchema) -> None:

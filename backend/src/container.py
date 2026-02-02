@@ -4,6 +4,7 @@ from src.presentation.controllers.attribute_schema_controller import AttributeSc
 from src.application.use_cases.create_attribute_schema import CreateAttributeSchemaUseCase
 from src.application.use_cases.get_attribute_schema import GetAttributeSchemaUseCase
 from src.application.use_cases.validate_attribute_value import ValidateAttributeValueUseCase
+from src.application.use_cases.get_all_attribute_schemas import GetAllAttributeSchemasUseCase
 from src.infrastructure.connectors.file_connector import FileConnector
 from src.infrastructure.identifiers.attribute_schema_identifier_generator import AttributeSchemaIdentifierGenerator
 from src.infrastructure.persistence.repositories.attribute_schema_repository import JsonAttributeSchemaRepository
@@ -35,11 +36,16 @@ class Container:
             validator_service=JsonSchemaValidatorService()
         )
         
+        self.get_all_use_case = GetAllAttributeSchemasUseCase(
+            repository=self.attribute_schema_repository
+        )
+
         # 5. Controllers
         self.attribute_schema_controller = AttributeSchemaController(
             create_use_case=self.create_attribute_schema_use_case,
             get_use_case=self.get_use_case,
-            validate_use_case=self.validate_attribute_value_use_case
+            validate_use_case=self.validate_attribute_value_use_case,
+            get_all_use_case=self.get_all_use_case
         )
 
 # Create a singleton instance to be used by Presentation layer

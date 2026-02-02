@@ -29,6 +29,18 @@ def create_attribute_schema(
     return controller.create(request)
 
 @router.get(
+        "/", 
+        response_model=list[AttributeSchemaDTO], 
+        response_model_by_alias=True,
+        response_model_exclude_none=True,
+        status_code=status.HTTP_200_OK
+)
+def get_all_attribute_schemas(
+    controller: AttributeSchemaController = Depends(get_attribute_controller)
+):
+    return controller.get_all()
+
+@router.get(
         "/{attribute_schema_id}", 
         response_model=AttributeSchemaDTO, 
         response_model_by_alias=True,

@@ -26,3 +26,7 @@ class JsonAttributeSchemaRepository(IAttributeSchemaRepository):
 
     def delete(self, id: AttributeIdentifier) -> None:
         pass
+    
+    def get_all(self) -> list[AttributeSchema]:
+        data = self.connector.read_json(self.collection)
+        return [AttributeSchema.model_validate(attr) for attr in data.values()]

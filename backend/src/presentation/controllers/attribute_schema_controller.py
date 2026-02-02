@@ -3,6 +3,7 @@
 from src.application.use_cases.get_attribute_schema import GetAttributeSchemaUseCase
 from src.application.use_cases.create_attribute_schema import CreateAttributeSchemaUseCase
 from src.application.use_cases.validate_attribute_value import ValidateAttributeValueUseCase
+from src.application.use_cases.get_all_attribute_schemas import GetAllAttributeSchemasUseCase
 from src.application.dtos.attribute_schema_dto import AttributeSchemaRequest, AttributeSchemaDTO
 from src.application.dtos.attribute_validation_dto import ValueValidationRequest, ValueValidationResponse
 
@@ -11,12 +12,14 @@ class AttributeSchemaController:
             self, 
             create_use_case: CreateAttributeSchemaUseCase,
             get_use_case: GetAttributeSchemaUseCase,
-            validate_use_case: ValidateAttributeValueUseCase
+            validate_use_case: ValidateAttributeValueUseCase,
+            get_all_use_case: GetAllAttributeSchemasUseCase
         ):
 
         self.create_use_case = create_use_case
         self.get_use_case = get_use_case
         self.validate_use_case = validate_use_case
+        self.get_all_use_case = get_all_use_case
 
     def create(self, dto: AttributeSchemaRequest) -> AttributeSchemaDTO:
         attribute_schema = self.create_use_case.execute(dto)
@@ -27,3 +30,6 @@ class AttributeSchemaController:
     
     def validate(self, id_value: str, request: ValueValidationRequest) -> ValueValidationResponse:
         return self.validate_use_case.execute(id_value, request)
+    
+    def get_all(self) -> list[AttributeSchemaDTO]:
+        return self.get_all_use_case.execute()
